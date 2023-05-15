@@ -19,15 +19,15 @@ const Filter = () => {
               <strong>Filter</strong>
             </span>
           </div>
-          <div className="p-md-3 p-sm-3 p-lg-3 border ">
+          <div className="p-md-3 p-sm-3 p-lg-3  ">
             <p>Brand</p>
             <Brand />
           </div>
-          <div className="p-md-3 p-sm-3 p-lg-3 border ">
+          <div className="p-md-3 p-sm-3 p-lg-3 ">
             <p>RAM</p>
             <Ram />
           </div>
-          <div className="p-2 border ">
+          <div className="p-2 ">
             <p>Price</p>
             <Price />
           </div>

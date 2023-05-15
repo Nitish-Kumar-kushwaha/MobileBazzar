@@ -1,6 +1,7 @@
 //@ts-check
 
 import NavBar from "@/Components/NavBar";
+import style from "../../styles/login.module.css";
 import { Container } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -33,9 +34,16 @@ const Login = () => {
   return (
     <>
       <NavBar />
-      <div className="my-5 align-self-center">
-        <Container className="border">
-          <div className="p-md-3 my-2 mx-2">
+
+      <section className="container-fluid bg-warning  ">
+        <div
+          className=" bg-warning d-flex align-items-center justify-content-center  not-found-container"
+          style={{ minHeight: "100vh" }}
+        >
+          <div
+            className={" p-md-3 my-2 mx-2 shadow p-3 mb-5 bg-body rounded"}
+            style={{ width: "600px" }}
+          >
             <h3>Log In</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group my-md-2">
@@ -99,8 +107,8 @@ const Login = () => {
               </button>
             </form>
           </div>
-        </Container>
-      </div>
+        </div>
+      </section>
     </>
   );
 };
