@@ -61,7 +61,7 @@ const Ram = () => {
                   value="3 GB RAM"
                   onChange={handleChange}
                 />
-                2 GB
+                3 GB
               </label>
             </div>
             <br />

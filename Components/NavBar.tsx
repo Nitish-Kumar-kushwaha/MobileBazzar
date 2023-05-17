@@ -74,7 +74,7 @@ const NavBar = () => {
               </Nav.Link>
               <Nav.Link href="/">Home</Nav.Link>
               <NavLink>Contact</NavLink>
-              <Nav.Link className="cart">
+              <Nav.Link className="cart" href="/Cart">
                 <span>Cart</span>
               </Nav.Link>
             </Nav>

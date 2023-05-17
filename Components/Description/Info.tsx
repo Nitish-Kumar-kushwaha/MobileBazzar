@@ -37,25 +37,41 @@ const Info = ({ Data }: infoPro) => {
   let price = getRandomInt();
 
   const result: brandData[] = data.filter((res: brandData) => res.id == ID);
-  console.log("id is", ID);
-  console.log("result : ", result);
-  console.log(result.map((a: brandData) => a));
+  // console.log("id is", ID);
+  // console.log("result : ", result);
+  // console.log(result.map((a: brandData) => a));
+
+  // Cart Implementation
+
+  if (!localStorage.getItem("cart")) {
+    localStorage.setItem("cart", JSON.stringify([]));
+  }
 
   function addToCart() {
     console.log("Cart Triggred");
 
-    setCart({
-      cartItems: [...cart.cartItems, result[0]],
-      cartItemCount: cart.cartItemCount + 1,
-    });
+    // setCart({
+    //   cartItems: [...cart.cartItems, result[0]],
+    //   cartItemCount: cart.cartItemCount + 1,
+    // });
+
+    const cart: brandData[] = (function () {
+      let cartData = localStorage.getItem("cart");
+      return cartData ? JSON.parse(cartData) : [];
+    })();
+
+    console.log("data is pushed");
+    cart.push(result[0]);
+    localStorage.setItem("cart", JSON.stringify(cart));
 
     // localStorage.setItem("cart", JSON.stringify(cart.cartItems));
   }
 
-  console.log("cart Items", cart);
-  console.log("cart count", cart.cartItemCount);
+  // console.log("cart Items", cart);
+  // console.log("cart count", cart.cartItemCount);
+  // console.log("storage", localStorage.getItem("cart"));
   // console.log(localStorage.getItem("cart"));
-  localStorage.clear();
+  // localStorage.clear();
 
   function infoCard(val: brandData) {
     return (
@@ -65,9 +81,8 @@ const Info = ({ Data }: infoPro) => {
             <div className="row">
               <div className="col col-md-4 col-sm-6">
                 <Container>
-                  <Card style={{ width: "" }}>
-                    <Card.Img src={val.img_url} className="p-2" />
-                  </Card>
+                  <Card.Img src={val.img_url} className="p-3" variant="top" />
+
                   <div className="flex flex-column flex-wrap justify-content-centre p-3">
                     <div className="d-flex flex-row">
                       <Button

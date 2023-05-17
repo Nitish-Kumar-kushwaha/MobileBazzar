@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 
-import { brandData } from '@/Typess/Typess';
+import { brandData } from "@/Typess/Typess";
 
 type Brands = {
   name: string;
@@ -23,9 +23,10 @@ type NavSearch = {
 };
 
 type Cart = {
-  cartItems: brandData[],
-  cartItemCount : number
-}
+  cartItems: brandData[];
+  cartItemCount: number;
+};
+
 
 export type BrandContextType = {
   brand: Brands;
@@ -39,6 +40,7 @@ export type BrandContextType = {
 
   cart: Cart;
   setCart: Dispatch<SetStateAction<Cart>>;
+
 };
 
 const defaultSate = {
@@ -57,13 +59,14 @@ const defaultSate = {
   navSearch: {
     name: "",
   },
-  setNavSearch: (navSearch: NavSearch) => { },
-  
+  setNavSearch: (navSearch: NavSearch) => {},
+
   cart: {
     cartItems: [],
-    cartItemCount: 0
+    cartItemCount: 0,
   },
-  setCart :(cart : Cart) => {},
+  setCart: (cart: Cart) => {},
+
 } as BrandContextType;
 
 export const AppContext = createContext<BrandContextType>(defaultSate);
@@ -89,12 +92,23 @@ const AppProvider = ({ children }: appPropviderProps) => {
 
   const [cart, setCart] = useState({
     cartItems: [] as brandData[],
-    cartItemCount : 0
-  })
+    cartItemCount: 0,
+  });
+
+  
 
   return (
     <AppContext.Provider
-      value={{ brand, setBrand, ram, setRam, navSearch, setNavSearch , cart , setCart }}
+      value={{
+        brand,
+        setBrand,
+        ram,
+        setRam,
+        navSearch,
+        setNavSearch,
+        cart,
+        setCart,
+      }}
     >
       {children}
     </AppContext.Provider>

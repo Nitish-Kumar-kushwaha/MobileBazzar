@@ -43,8 +43,8 @@ const Block = ({
     <>
       <div>
         <Card
-          style={{ width: "15.9999999rem", height: "38rem" }}
-          className=" mx-4 my-5 border shadow p-3 mb-5 bg-body rounded"
+          // style={{ width: "15.9999999rem", height: "38rem" }}
+          className="  border shadow mb-5 bg-body"
           // onMouseOver={handleMouseCardOver}
           // onMouseOut={handleMouseCardOut}
         >

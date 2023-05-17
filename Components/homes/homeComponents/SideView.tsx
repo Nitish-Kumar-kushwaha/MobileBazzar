@@ -5,24 +5,30 @@ import Block from "./Block/Block";
 import Link from "next/link";
 import { AppContext } from "@/Components/AppContext";
 import { brandData } from "@/Typess/Typess";
-
-
+import Loading from "@/Components/UI/Loading";
 
 const SideView = () => {
   const [data, setData] = useState<brandData[]>([]);
   const [filteredData, setFilteredData] = useState<brandData[]>([]);
   const [filterdBrand, setFilteredBrand] = useState<string>("");
-  const { brand, ram , navSearch } = useContext(AppContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { brand, ram, navSearch } = useContext(AppContext);
 
   useEffect(() => {
+    setLoading(true);
+
     fetch(
       "https://raw.githubusercontent.com/Alucard17/PhoneAPI/master/phones.json"
     )
       .then((response) => response.json())
       .then((dJason) => {
-        setData(dJason.mobile.slice(0,1000));
+        setData(dJason.mobile.slice(0, 1000));
+        setLoading(false);
       })
-      .catch((error) => error);
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -84,27 +90,15 @@ const SideView = () => {
     }
   }
 
-
   function filterNav(data: brandData[]): brandData[] {
-    // if (ram.checked == false) {
-      return data.filter((res) => {
-        if (res.brand.includes(navSearch.name)) {
-          v = "ram";
-          console.log("filtered", navSearch.name);
-          return res;
-        }
-      });
-    // } else {
-    //   return data.filter((res) => {
-    //     if (res.RAM.includes(ram.name)) {
-    //       v = "ram";
-    //       console.log("filtered", ram.name);
-    //       return res;
-    //     }
-    //   });
-    // }
+    return data.filter((res) => {
+      if (res.brand.includes(navSearch.name)) {
+        v = "ram";
+        console.log("filtered", navSearch.name);
+        return res;
+      }
+    });
   }
-
 
   function show() {
     data.map((res: brandData) => {
@@ -125,50 +119,44 @@ const SideView = () => {
   // style={{color: "inherit", text-decoration: "inherit"}}
 
   function nCard(val: brandData) {
+    console.log("value is  ", val);
     return (
       <>
-        <Link
-          href={`/${val.id}`}
-          style={{ color: "inherit", textDecoration: "inherit" }}
-        >
-          <div >
-            <Block
-              ImageSrc={val.img_url}
-              model={val.model}
-              brand={val.brand}
-              ram={val.RAM}
-              cpu={val.CPU}
-              tech={val.network_technology}
-              price={getRandomInt()}
-            />
-          </div>
-        </Link>
+        <div className="col-sm-4">
+          <Link
+            href={`/${val.id}`}
+            style={{ color: "inherit", textDecoration: "inherit" }}
+          >
+            <div style={{ padding: "20px" }}>
+              <Block
+                ImageSrc={val.img_url}
+                model={val.model}
+                brand={val.brand}
+                ram={val.RAM}
+                cpu={val.CPU}
+                tech={val.network_technology}
+                price={getRandomInt()}
+              />
+            </div>
+          </Link>
+        </div>
       </>
     );
   }
 
-  // if (filteredData != null) {
-  //   return (
-  //     <>
-  //       <div className=" p-3">
-  //         <div className="p-3 mx-5 d-flex align-content-md-around align-content-sm-around flex-wrap flex-md-wrap flex-sm-wrap">
-  //           {filteredData.map(nCard)}
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // }
-  // else {
   return (
     <>
-      <div className=" p-3" style={{height:"100%"}}>
-        <div className="p-3 mx-5 d-flex align-content-md-evenly align-content-sm-evenly align-content-xl-evenly flex-wrap flex-md-wrap flex-xl-wrap flex-sm-wrap">
-          {filteredData.length == 0 ? data.map(nCard) : filteredData.map(nCard)}
-        </div>
+      <div className=" row col-sm-12">
+        {loading ? (
+          <Loading />
+        ) : filteredData.length == 0 ? (
+          data.map(nCard)
+        ) : (
+          filteredData.map(nCard)
+        )}
       </div>
     </>
   );
-  // }
 };
 
 export default SideView;
