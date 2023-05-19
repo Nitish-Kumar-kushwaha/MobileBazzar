@@ -9,7 +9,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (typeof localStorage !== "undefined") {
-      if (localStorage.getItem("cart")) {
+      if (localStorage.getItem("cartItem")) {
         setHasCart(true);
       }
     }

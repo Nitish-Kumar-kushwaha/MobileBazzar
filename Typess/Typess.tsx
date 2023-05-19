@@ -41,3 +41,11 @@ export type brandData = {
   img_url: string;
   id: number;
 };
+
+export type StoreItems = {
+  id: number;
+  name: string;
+  price: number;
+  url: string;
+  quantity: number;
+};

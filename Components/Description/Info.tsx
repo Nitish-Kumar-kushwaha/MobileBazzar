@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import { AppContext } from "../AppContext";
-import { brandData } from "@/Typess/Typess";
+import { brandData, StoreItems } from "@/Typess/Typess";
+import ToastBox from "../UI/Toast";
 
 type infoPro = {
   Data: number;
@@ -9,6 +10,7 @@ type infoPro = {
 
 const Info = ({ Data }: infoPro) => {
   const [data, setData] = useState([]);
+  const [showw, setShoww] = useState(false);
   const ID = Data;
 
   console.log("inside info prof id is", ID);
@@ -37,41 +39,70 @@ const Info = ({ Data }: infoPro) => {
   let price = getRandomInt();
 
   const result: brandData[] = data.filter((res: brandData) => res.id == ID);
-  // console.log("id is", ID);
-  // console.log("result : ", result);
-  // console.log(result.map((a: brandData) => a));
 
   // Cart Implementation
 
-  if (!localStorage.getItem("cart")) {
-    localStorage.setItem("cart", JSON.stringify([]));
+  if (!localStorage.getItem("cartItem")) {
+    localStorage.setItem("cartItem", JSON.stringify([]));
   }
 
-  function addToCart() {
-    console.log("Cart Triggred");
+  // function addToCart() {
+  //   console.log("Cart Triggred");
 
-    // setCart({
-    //   cartItems: [...cart.cartItems, result[0]],
-    //   cartItemCount: cart.cartItemCount + 1,
-    // });
+  //   const cart: brandData[] = (function () {
+  //     let cartData = localStorage.getItem("cart");
+  //     return cartData ? JSON.parse(cartData) : [];
+  //   })();
 
-    const cart: brandData[] = (function () {
-      let cartData = localStorage.getItem("cart");
+  //   console.log("data is pushed");
+  //   cart.push(result[0]);
+  //   localStorage.setItem("cart", JSON.stringify(cart));
+  // }
+
+  function addToCart(val: brandData, priceVal: number) {
+    const cart: StoreItems[] = (function () {
+      let cartData = localStorage.getItem("cartItem");
       return cartData ? JSON.parse(cartData) : [];
     })();
 
-    console.log("data is pushed");
-    cart.push(result[0]);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (cart.length === 0) {
+      const res: StoreItems = {
+        id: val.id,
+        name: val.brand + val.model,
+        price: priceVal,
+        url: val.img_url,
+        quantity: 1,
+      };
+      cart.push(res);
+    } else {
+      const res = cart.find((elem) => {
+        return elem.id === val.id;
+      });
 
-    // localStorage.setItem("cart", JSON.stringify(cart.cartItems));
+      if (res === undefined) {
+        const res: StoreItems = {
+          id: val.id,
+          name: val.brand + " " + val.model,
+          price: priceVal,
+          url: val.img_url,
+          quantity: 1,
+        };
+        cart.push(res);
+      } else {
+        cart.find((elem) => {
+          if (elem.id === val.id) {
+            elem.quantity = elem.quantity + 1;
+          }
+        });
+      }
+    }
+
+    console.log("cart items : ", cart);
+
+    localStorage.setItem("cartItem", JSON.stringify(cart));
+
+    console.log("cart items : ", localStorage.getItem("cartItem"));
   }
-
-  // console.log("cart Items", cart);
-  // console.log("cart count", cart.cartItemCount);
-  // console.log("storage", localStorage.getItem("cart"));
-  // console.log(localStorage.getItem("cart"));
-  // localStorage.clear();
 
   function infoCard(val: brandData) {
     return (
@@ -87,7 +118,7 @@ const Info = ({ Data }: infoPro) => {
                     <div className="d-flex flex-row">
                       <Button
                         className=" btn btn-sm btn-md btn-xl btn-warning mx-2"
-                        onClick={addToCart}
+                        onClick={() => addToCart(val, 100000)}
                       >
                         ADD TO CART
                       </Button>

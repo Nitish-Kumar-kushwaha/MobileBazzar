@@ -7,6 +7,8 @@ import { AppContext } from "@/Components/AppContext";
 import { brandData } from "@/Typess/Typess";
 import Loading from "@/Components/UI/Loading";
 
+import style from "../../../styles/sideview.module.css";
+
 const SideView = () => {
   const [data, setData] = useState<brandData[]>([]);
   const [filteredData, setFilteredData] = useState<brandData[]>([]);
@@ -122,12 +124,12 @@ const SideView = () => {
     console.log("value is  ", val);
     return (
       <>
-        <div className="col-sm-4">
+        <div className={"  col-sm-3 "}>
           <Link
             href={`/${val.id}`}
             style={{ color: "inherit", textDecoration: "inherit" }}
           >
-            <div style={{ padding: "20px" }}>
+            <div style={{ padding: "20px" }} className="blockquote-md">
               <Block
                 ImageSrc={val.img_url}
                 model={val.model}
@@ -146,7 +148,7 @@ const SideView = () => {
 
   return (
     <>
-      <div className=" row col-sm-12">
+      <div className=" row ">
         {loading ? (
           <Loading />
         ) : filteredData.length == 0 ? (

@@ -43,20 +43,20 @@ const Block = ({
     <>
       <div>
         <Card
-          // style={{ width: "15.9999999rem", height: "38rem" }}
-          className="  border shadow mb-5 bg-body"
+          style={{ height: "50rem" }}
+          className={"border shadow mb-5 bg-body "}
           // onMouseOver={handleMouseCardOver}
           // onMouseOut={handleMouseCardOut}
         >
-          <Card.Img variant="top" src={ImageSrc} />
+          <Card.Img variant="top" src={ImageSrc} className="px-3 py-3" style={{height:"30rem"}}/>
           <Card.Body>
             <Card.Title
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
-              <h4>{model}</h4>
+              <h5 className="display-6">{model}</h5>
             </Card.Title>
-            <Card.Text className="p-2">
+            <Card.Text className="p-3">
               <div className="list-group">
                 <span className="">Brand: {brand}</span>
                 <span className="">Price: ₹{price}</span>

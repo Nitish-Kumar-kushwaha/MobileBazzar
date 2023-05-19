@@ -2,83 +2,128 @@
 
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
-import { brandData } from "@/Typess/Typess";
+import { brandData, StoreItems } from "@/Typess/Typess";
+import { Button, Card } from "react-bootstrap";
+
+type filterCart = {
+  cartItem: brandData;
+  count: number;
+};
 
 const ValuCart = () => {
-  const [cartValue, setCartValue] = useState<brandData[]>([]);
+  const [cartValue, setCartValue] = useState<StoreItems[]>([]);
+  const [changeCart, setChangeCart] = useState(0);
 
   useEffect(() => {
     if (typeof localStorage !== "undefined") {
-      let cartData = localStorage.getItem("cart");
+      let cartData = localStorage.getItem("cartItem");
       let parsedCartData = cartData ? JSON.parse(cartData) : [];
       setCartValue(parsedCartData);
     }
-  }, []);
+  }, [changeCart]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("cartItem", JSON.stringify(cartValue));
+  // }, [cartValue]);
 
   console.log(cartValue);
 
-  // console.log(localStorage.getItem("cart"));
-
   //cart count functionality
-
-  // function showCount(val : number) { }
-
-  function getCount(val: number): number {
-    const count = cartValue.filter((res) => {
-      if (res.id == val) {
-        return res;
-      }
-    });
-
-    return count.length;
-  }
 
   // remove items from cart
 
   function removeItems(val: number) {
-    let tempData: brandData[] = cartValue.filter((res) => {
+    let tempData: StoreItems[] = cartValue.filter((res) => {
       if (res.id !== val) {
         return res;
       }
     });
 
-    localStorage.setItem("cart", JSON.stringify(tempData));
+    localStorage.setItem("cartItem", JSON.stringify(tempData));
+    setChangeCart(Math.random());
   }
 
-  function cartItems(val: brandData) {
+  if (!localStorage.getItem("sortedMap")) {
+    localStorage.setItem("sorted", JSON.stringify([]));
+  }
+
+  //increment cart values
+
+  function incrementValue(val: number) {
+    setChangeCart(Math.random());
+    const cart: StoreItems[] = (function () {
+      let cartData = localStorage.getItem("cartItem");
+      return cartData ? JSON.parse(cartData) : [];
+    })();
+
+    cart.find((elem) => {
+      if (elem.id === val) {
+        elem.quantity = elem.quantity + 1;
+      }
+    });
+
+    console.log("updated value:", cart);
+    localStorage.setItem("cartItem", JSON.stringify(cart));
+  }
+
+  // decrement the cart values
+
+  function decrementValue(val: number) {
+    setChangeCart(Math.random());
+
+    const cart: StoreItems[] = (function () {
+      let cartData = localStorage.getItem("cartItem");
+      return cartData ? JSON.parse(cartData) : [];
+    })();
+
+    cart.find((elem) => {
+      if (elem.id === val && elem.quantity > 1) {
+        console.log("item clicked");
+        elem.quantity = elem.quantity - 1;
+        localStorage.setItem("cartItem", JSON.stringify(cart));
+      } else {
+        removeItems(elem.id);
+      }
+    });
+
+    console.log("updated value:", cart);
+  }
+
+  function cartItems(val: StoreItems) {
     return (
       <>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-3">
-              <div className="card" style={{ width: "6rem" }}>
-                <img src={val.img_url} />
+        <div className=" mx-4 ">
+          <Card
+            style={{ width: "18rem" }}
+            className="p-3  border shadow mb-5 bg-body "
+          >
+            <Card.Img variant="top" src={val.url} />
+            <Card.Body>
+              <Card.Title>{val.name}</Card.Title>
+              <div className="d-flex justify-content-around">
+                <Button
+                  variant="primary"
+                  onClick={() => incrementValue(val.id)}
+                >
+                  <h4>+</h4>
+                </Button>
+                <h4>{val.quantity} items </h4>
+                <Button
+                  variant="primary"
+                  onClick={() => decrementValue(val.id)}
+                >
+                  <h4>-</h4>
+                </Button>
               </div>
-            </div>
-            <div className="col-md-3">
-              <div>
+
+              <br />
+
+              <Button variant="danger" onClick={() => removeItems(val.id)}>
                 {" "}
-                <span>
-                  {val.id} {val.brand} {val.model}
-                </span>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="d-flex">
-                <button className="btn btn-primary">+</button>
-                <span>{getCount(val.id)}</span>
-                <button className="btn btn-danger">-</button>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <button
-                className="btn btn-danger"
-                onClick={() => removeItems(val.id)}
-              >
-                X
-              </button>
-            </div>
-          </div>
+                Remove
+              </Button>
+            </Card.Body>
+          </Card>
         </div>
       </>
     );
@@ -86,14 +131,13 @@ const ValuCart = () => {
 
   return (
     <>
-      <h1>Items in cart</h1>
-      <div className="row">
-        <div className="col-10">
-          <div>{cartValue.map(cartItems)}</div>
-        </div>
-        <div className="col-2">
-          <div>
-            <h4>Cart details </h4>
+      <div className="p-2">
+        <h1 className="display-2">CART</h1>
+        <div className=" container-fluid row">
+          <div className="col-3 ">
+            <div className="d-flex align-items-center">
+              {cartValue.map(cartItems)}
+            </div>
           </div>
         </div>
       </div>
