@@ -5,6 +5,10 @@ import NavBar from "../NavBar";
 import { brandData, StoreItems } from "@/Typess/Typess";
 import { Button, Card } from "react-bootstrap";
 
+import { CiCircleRemove } from "react-icons/ci";
+import { IoMdAddCircle } from "react-icons/io";
+import { AiFillMinusCircle } from "react-icons/ai";
+
 type filterCart = {
   cartItem: brandData;
   count: number;
@@ -92,35 +96,44 @@ const ValuCart = () => {
   function cartItems(val: StoreItems) {
     return (
       <>
-        <div className=" mx-4 ">
+        <div className=" col-md-2  ">
           <Card
-            style={{ width: "18rem" }}
+            style={{ width: "18rem", height: "35rem" }}
             className="p-3  border shadow mb-5 bg-body "
           >
             <Card.Img variant="top" src={val.url} />
             <Card.Body>
-              <Card.Title>{val.name}</Card.Title>
+              <Card.Title className="container h2">{val.name}</Card.Title>
               <div className="d-flex justify-content-around">
                 <Button
                   variant="primary"
                   onClick={() => incrementValue(val.id)}
                 >
-                  <h4>+</h4>
+                  <h4>
+                    <IoMdAddCircle />
+                  </h4>
                 </Button>
                 <h4>{val.quantity} items </h4>
                 <Button
                   variant="primary"
                   onClick={() => decrementValue(val.id)}
                 >
-                  <h4>-</h4>
+                  <h4>
+                    {" "}
+                    <AiFillMinusCircle />{" "}
+                  </h4>
                 </Button>
               </div>
 
               <br />
 
-              <Button variant="danger" onClick={() => removeItems(val.id)}>
+              <Button
+                variant="danger"
+                onClick={() => removeItems(val.id)}
+                className="centre container"
+              >
                 {" "}
-                Remove
+                Remove <CiCircleRemove size={30} color="white" />
               </Button>
             </Card.Body>
           </Card>
@@ -131,13 +144,16 @@ const ValuCart = () => {
 
   return (
     <>
-      <div className="p-2">
-        <h1 className="display-2">CART</h1>
-        <div className=" container-fluid row">
-          <div className="col-3 ">
-            <div className="d-flex align-items-center">
-              {cartValue.map(cartItems)}
-            </div>
+      <div className="p-2   ">
+        <div className="align-items-center justify-content-center " style={{minWidth:"100vh"}}>
+          <h1 className="display-2 ">CART</h1>
+        </div>
+
+        <div className=" container-fluid">
+          <div className=" row">
+            {/* <div className=" d-flex align-items-center"> */}
+            {cartValue.map(cartItems)}
+            {/* </div> */}
           </div>
         </div>
       </div>

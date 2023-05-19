@@ -48,7 +48,12 @@ const Block = ({
           // onMouseOver={handleMouseCardOver}
           // onMouseOut={handleMouseCardOut}
         >
-          <Card.Img variant="top" src={ImageSrc} className="px-3 py-3" style={{height:"30rem"}}/>
+          <Card.Img
+            variant="top"
+            src={ImageSrc}
+            className="px-3 py-3 "
+            style={{ height: "30rem" }}
+          />
           <Card.Body>
             <Card.Title
               onMouseOver={handleMouseOver}

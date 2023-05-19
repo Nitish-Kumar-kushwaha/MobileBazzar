@@ -13,7 +13,7 @@ const Filter = () => {
     <>
       <div
         // className=" p-2"
-        className=" p-2 mx-3 my-2 border shadow p-3 mb-5 bg-body rounded"
+        className=" p-2 mx-3 my-2 border shadow p-3 mb-5 bg-body rounded fixed-left"
       >
         <Container>
           <div className="p-md-3 p-sm-3 p-lg-3 ">

@@ -1,4 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { BsFillCartCheckFill } from "react-icons/bs";
+import { StoreItems } from "@/Typess/Typess";
 
 import {
   Nav,
@@ -15,6 +17,21 @@ import { AppContext } from "./AppContext";
 const NavBar = () => {
   const { navSearch, setNavSearch } = useContext(AppContext);
 
+  const [cartItems, setCartItems] = useState<StoreItems[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const cartData = localStorage.getItem("cartItem");
+      const parsedCartData: StoreItems[] = cartData ? JSON.parse(cartData) : [];
+      setCartItems(parsedCartData);
+    }
+  }, []);
+
+  const cartQuantity = cartItems.reduce(
+    (totalQuantity, item) => totalQuantity + item.quantity,
+    0
+  );
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNavSearch({
       name: event.target.value,
@@ -23,7 +40,7 @@ const NavBar = () => {
   };
   return (
     <>
-      <Navbar bg="primary" expand="lg ">
+      <Navbar bg="primary" expand="lg " className="">
         <Container>
           <Navbar.Brand href="/" className="text-white me-auto ">
             <h4>Mobile-Bazzar</h4>
@@ -75,7 +92,8 @@ const NavBar = () => {
               <Nav.Link href="/">Home</Nav.Link>
               <NavLink>Contact</NavLink>
               <Nav.Link className="cart" href="/Cart">
-                <span>Cart</span>
+                <BsFillCartCheckFill size={40} className="text-warning" />{" "}
+                {cartQuantity}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

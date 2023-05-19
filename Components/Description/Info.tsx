@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import { AppContext } from "../AppContext";
 import { brandData, StoreItems } from "@/Typess/Typess";
-import ToastBox from "../UI/Toast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type infoPro = {
   Data: number;
@@ -10,7 +11,6 @@ type infoPro = {
 
 const Info = ({ Data }: infoPro) => {
   const [data, setData] = useState([]);
-  const [showw, setShoww] = useState(false);
   const ID = Data;
 
   console.log("inside info prof id is", ID);
@@ -46,18 +46,24 @@ const Info = ({ Data }: infoPro) => {
     localStorage.setItem("cartItem", JSON.stringify([]));
   }
 
-  // function addToCart() {
-  //   console.log("Cart Triggred");
+  // Toast
 
-  //   const cart: brandData[] = (function () {
-  //     let cartData = localStorage.getItem("cart");
-  //     return cartData ? JSON.parse(cartData) : [];
-  //   })();
-
-  //   console.log("data is pushed");
-  //   cart.push(result[0]);
-  //   localStorage.setItem("cart", JSON.stringify(cart));
-  // }
+  const notify = () => {
+    toast.success("Item Added to cart!", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      style: {
+        background: "#ffb300",
+        color: "black",
+      },
+      theme: "colored",
+    });
+  };
 
   function addToCart(val: brandData, priceVal: number) {
     const cart: StoreItems[] = (function () {
@@ -102,6 +108,8 @@ const Info = ({ Data }: infoPro) => {
     localStorage.setItem("cartItem", JSON.stringify(cart));
 
     console.log("cart items : ", localStorage.getItem("cartItem"));
+
+    notify();
   }
 
   function infoCard(val: brandData) {
@@ -117,13 +125,13 @@ const Info = ({ Data }: infoPro) => {
                   <div className="flex flex-column flex-wrap justify-content-centre p-3">
                     <div className="d-flex flex-row">
                       <Button
-                        className=" btn btn-sm btn-md btn-xl btn-warning mx-2"
+                        className=" btn-warning mx-2"
                         onClick={() => addToCart(val, 100000)}
                       >
                         ADD TO CART
                       </Button>
 
-                      <Button className=" btn btn-sm btn-danger mx-2">
+                      <Button className="btn-danger mx-2">
                         BUY NOW
                       </Button>
                     </div>
@@ -156,6 +164,7 @@ const Info = ({ Data }: infoPro) => {
             </div>
           </Container>
         </div>
+        <ToastContainer />
       </>
     );
   }
